@@ -7,6 +7,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpecs} from "../swagger.config";
+
 import router from "./router"
 
 dotenv.config();
@@ -23,9 +26,13 @@ app.use(bodyParser.json());
 
 const server = http.createServer(app);
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
 server.listen(process.env.PORT, () => {
     console.log(`Server running on http://localhost:${process.env.PORT}/`);
+    console.log(`Swagger running on http://localhost:${process.env.PORT}/api-docs`);
 });
+
 
 const MONGO_URL = process.env.DATABASE_URL;
 mongoose.Promise = Promise;
